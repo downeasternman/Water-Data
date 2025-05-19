@@ -1,50 +1,97 @@
+# Water Data App
 
-# TypeScript
+A React Native/Expo application for monitoring water conditions using real-time data from the United States Geological Survey (USGS).
 
-[![CI](https://github.com/microsoft/TypeScript/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/TypeScript/actions/workflows/ci.yml)
-[![npm version](https://badge.fury.io/js/typescript.svg)](https://www.npmjs.com/package/typescript)
-[![Downloads](https://img.shields.io/npm/dm/typescript.svg)](https://www.npmjs.com/package/typescript)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/microsoft/TypeScript/badge)](https://securityscorecards.dev/viewer/?uri=github.com/microsoft/TypeScript)
+## Features
 
+- Real-time water temperature and discharge monitoring
+- Offline support with local data caching
+- Pull-to-refresh functionality
+- Automatic data refresh every 4 hours
+- Beautiful and intuitive user interface
+- Support for both iOS and Android platforms
 
-[TypeScript](https://www.typescriptlang.org/) is a language for application-scale JavaScript. TypeScript adds optional types to JavaScript that support tools for large-scale JavaScript applications for any browser, for any host, on any OS. TypeScript compiles to readable, standards-based JavaScript. Try it out at the [playground](https://www.typescriptlang.org/play/), and stay up to date via [our blog](https://blogs.msdn.microsoft.com/typescript) and [Twitter account](https://twitter.com/typescript).
+## Data Sources
 
-Find others who are using TypeScript at [our community page](https://www.typescriptlang.org/community/).
+The app fetches data from USGS water services API:
+- Temperature data from site 01021050
+- Discharge data from site 01021000
 
-## Installing
+## Technical Stack
 
-For the latest stable version:
+- React Native/Expo
+- TypeScript
+- React Navigation
+- React Native Paper (UI components)
+- Expo SQLite (local data storage)
+- Axios (API requests)
+- React Native NetInfo (network status)
 
+## Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- Expo CLI
+- iOS Simulator (for iOS development)
+- Android Studio (for Android development)
+
+## Installation
+
+1. Clone the repository:
 ```bash
-npm install -D typescript
+git clone [repository-url]
+cd WaterDataApp
 ```
 
-For our nightly builds:
-
+2. Install dependencies:
 ```bash
-npm install -D typescript@next
+npm install
+# or
+yarn install
 ```
 
-## Contribute
+3. Start the development server:
+```bash
+npm start
+# or
+yarn start
+```
 
-There are many ways to [contribute](https://github.com/microsoft/TypeScript/blob/main/CONTRIBUTING.md) to TypeScript.
-* [Submit bugs](https://github.com/microsoft/TypeScript/issues) and help us verify fixes as they are checked in.
-* Review the [source code changes](https://github.com/microsoft/TypeScript/pulls).
-* Engage with other TypeScript users and developers on [StackOverflow](https://stackoverflow.com/questions/tagged/typescript).
-* Help each other in the [TypeScript Community Discord](https://discord.gg/typescript).
-* Join the [#typescript](https://twitter.com/search?q=%23TypeScript) discussion on Twitter.
-* [Contribute bug fixes](https://github.com/microsoft/TypeScript/blob/main/CONTRIBUTING.md).
+4. Run on your preferred platform:
+- Press `i` for iOS simulator
+- Press `a` for Android emulator
+- Scan QR code with Expo Go app on your physical device
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see
-the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com)
-with any additional questions or comments.
+## Project Structure
 
-## Documentation
+```
+WaterDataApp/
+├── src/
+│   ├── api/          # API integration
+│   ├── components/   # Reusable UI components
+│   ├── constants/    # App constants and theme
+│   ├── database/     # SQLite database operations
+│   ├── screens/      # App screens
+│   ├── types/        # TypeScript type definitions
+│   └── App.tsx       # Root component
+├── package.json
+└── README.md
+```
 
-*  [TypeScript in 5 minutes](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
-*  [Programming handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-*  [Homepage](https://www.typescriptlang.org/)
+## Contributing
 
-## Roadmap
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-For details on our planned features and future direction, please refer to our [roadmap](https://github.com/microsoft/TypeScript/wiki/Roadmap).
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- USGS for providing the water data API
+- Expo team for the amazing development platform
+- React Native community for the excellent tools and libraries
