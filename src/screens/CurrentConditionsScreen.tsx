@@ -93,6 +93,12 @@ export const CurrentConditionsScreen: React.FC = () => {
     );
   }
 
+  // Debug: log the raw history arrays
+  if (waterData) {
+    console.log('Raw temperature history:', waterData.temperature.history);
+    console.log('Raw discharge history:', waterData.discharge.history);
+  }
+
   return (
     <ScrollView
       style={styles.container}
@@ -117,6 +123,7 @@ export const CurrentConditionsScreen: React.FC = () => {
         unit={waterData?.temperature.unit}
         lastUpdated={waterData?.temperature.lastUpdated}
         previousValue={previousData?.temperature.current}
+        history={waterData?.temperature.history || []}
       />
 
       <DischargeCard
@@ -124,6 +131,7 @@ export const CurrentConditionsScreen: React.FC = () => {
         unit={waterData?.discharge.unit}
         lastUpdated={waterData?.discharge.lastUpdated}
         previousValue={previousData?.discharge.current}
+        history={waterData?.discharge.history || []}
       />
     </ScrollView>
   );

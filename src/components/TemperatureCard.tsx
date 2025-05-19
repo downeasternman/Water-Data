@@ -1,111 +1,60 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Card, Text, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { Icon } from './Icon';
+import { ExpandableGraphCard } from './ExpandableGraphCard';
 
 interface TemperatureCardProps {
   current: number;
   unit: string;
   lastUpdated: string;
   previousValue?: number;
+  history: { dateTime: string; value: number }[];
 }
 
-const celsiusToFahrenheit = (c: number): number => {
-  return (c * 9/5) + 32;
-};
-
-const fahrenheitToCelsius = (f: number): number => {
-  return (f - 32) * (5/9);
-};
+const celsiusToFahrenheit = (c: number): number => (c * 9/5) + 32;
+const isValidNumber = (n: any) => typeof n === 'number' && !isNaN(n) && isFinite(n);
 
 export const TemperatureCard: React.FC<TemperatureCardProps> = ({
   current,
   unit,
   lastUpdated,
   previousValue,
+  history = [],
 }) => {
   const theme = useTheme();
   const change = previousValue ? current - previousValue : 0;
   const changeColor = change > 0 ? theme.colors.error : change < 0 ? theme.colors.primary : theme.colors.onSurface;
-  
-  // Convert based on input unit
-  let fahrenheit: number;
-  let celsius: number;
-  
-  // Check if the unit string contains 'C' to determine if input is Celsius
-  if (unit.includes('C')) {
-    celsius = current;
-    fahrenheit = celsiusToFahrenheit(current);
-  } else {
-    fahrenheit = current;
-    celsius = fahrenheitToCelsius(current);
-  }
+
+  // Always convert to Fahrenheit for display and graph
+  const fahrenheit = unit.includes('C') ? celsiusToFahrenheit(current) : current;
+  const historyF = history
+    .map(h => ({ ...h, value: unit.includes('C') ? celsiusToFahrenheit(h.value) : h.value }))
+    .filter(h => isValidNumber(h.value));
+
+  // Debug: log the processed history array
+  console.log('TemperatureCard historyF:', historyF);
 
   return (
-    <Card style={styles.card}>
-      <Card.Content>
-        <View style={styles.header}>
-          <Icon name="thermometer" size={24} color={theme.colors.primary} />
-          <Text variant="titleMedium">Water Temperature</Text>
-        </View>
-        
-        <View style={styles.valueContainer}>
-          <Text variant="displaySmall" style={styles.value}>
-            {`${fahrenheit.toFixed(1)}°F (${celsius.toFixed(1)}°C)`}
-          </Text>
-        </View>
-
-        {previousValue && (
-          <View style={styles.changeContainer}>
-            <Icon
-              name={change > 0 ? 'arrow-up' : 'arrow-down'}
-              size={16}
-              color={changeColor}
-            />
-            <Text
-              variant="bodyMedium"
-              style={[styles.change, { color: changeColor }]}
-            >
-              {Math.abs(change).toFixed(1)} {unit}
-            </Text>
-          </View>
-        )}
-
-        <Text variant="bodySmall" style={styles.lastUpdated}>
-          Last updated: {new Date(lastUpdated).toLocaleString()}
-        </Text>
-      </Card.Content>
-    </Card>
+    <ExpandableGraphCard
+      title="Water Temperature"
+      icon={<Icon name="thermometer" size={24} color={theme.colors.primary} />}
+      value={`${fahrenheit.toFixed(1)}°F`}
+      lastUpdated={lastUpdated}
+      history={historyF}
+      unit="°F"
+    >
+      {previousValue && (
+        <>
+          <Icon
+            name={change > 0 ? 'arrow-up' : 'arrow-down'}
+            size={16}
+            color={changeColor}
+          />
+          <span style={{ color: changeColor, marginLeft: 4 }}>
+            {Math.abs(unit.includes('C') ? celsiusToFahrenheit(change) : change).toFixed(1)} °F
+          </span>
+        </>
+      )}
+    </ExpandableGraphCard>
   );
-};
-
-const styles = StyleSheet.create({
-  card: {
-    margin: 8,
-    elevation: 4,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  valueContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    marginBottom: 8,
-  },
-  value: {
-    marginRight: 8,
-  },
-  changeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  change: {
-    marginLeft: 4,
-  },
-  lastUpdated: {
-    opacity: 0.6,
-  },
-}); 
+}; 
