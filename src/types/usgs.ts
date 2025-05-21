@@ -60,6 +60,15 @@ export interface WaterData {
       value: number;
     }[];
   };
+  waveHeight?: {
+    current: number;
+    unit: string;
+    lastUpdated: string;
+    history: {
+      dateTime: string;
+      value: number;
+    }[];
+  };
 }
 
 export interface AlertThresholds {
@@ -68,6 +77,10 @@ export interface AlertThresholds {
     low: number;
   };
   discharge: {
+    high: number;
+    low: number;
+  };
+  waveHeight?: {
     high: number;
     low: number;
   };
@@ -93,6 +106,7 @@ export interface USGSRequestConfig {
 export interface USGSResponseValidation {
   hasTemperature: boolean;
   hasDischarge: boolean;
+  hasWaveHeight?: boolean;
   isValid: boolean;
   errors: string[];
 } 
